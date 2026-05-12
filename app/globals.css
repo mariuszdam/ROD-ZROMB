@@ -1,0 +1,36 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --soil:      #3D2B1F;
+  --bark:      #5C3D2E;
+  --moss:      #4A6741;
+  --leaf:      #6B8F5E;
+  --sage:      #8FAF82;
+  --sprout:    #B5C9A8;
+  --cream:     #F5F0E8;
+  --parchment: #EDE5D0;
+  --wheat:     #D4B896;
+  --rust:      #C0622F;
+  --sun:       #E8B84B;
+  --sky:       #7BA7BC;
+  --white:     #FFFFFF;
+
+  --font-display: var(--font-lora), Georgia, serif;
+  --font-ui:      var(--font-dm), system-ui, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  background: var(--cream);
+  color: var(--soil);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { cursor: pointer; font-family: var(--font-ui); }
+input, textarea { font-family: var(--font-ui); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--parchment); }
+::-webkit-scrollbar-thumb { background: var(--sprout); border-radius: 3px; }
