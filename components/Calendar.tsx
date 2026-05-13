@@ -271,14 +271,13 @@ export default function Calendar() {
                         </span>
                       </div>
                       <div className={styles.upcomingInfo}>
-                        <div className={styles.upcomingNames}>
-                          {bks.map(b => b.name).join(', ')}
-                        </div>
-                        <div className={styles.upcomingEmojis}>
-                          {[...new Set(bks.map(b => b.type))].map(t => (
-                            <span key={t}>{getEventType(t).emoji}</span>
-                          ))}
-                        </div>
+                        {bks.map(b => (
+                          <div key={b.id} className={styles.upcomingEntry}>
+                            <span className={styles.upcomingName}>{b.name}</span>
+                            {b.title && <span className={styles.upcomingTitle}>{b.title}</span>}
+                            <span className={styles.upcomingEmoji}>{getEventType(b.type).emoji}</span>
+                          </div>
+                        ))}
                       </div>
                       <div className={styles.upcomingCount}>{pluralize(bks.length)}</div>
                     </button>

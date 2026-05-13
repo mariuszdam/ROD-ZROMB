@@ -293,6 +293,28 @@
 
 .upcomingEmojis { font-size: 12px; margin-top: 2px; }
 
+.upcomingEntry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.upcomingName {
+  font-weight: 600;
+  color: var(--bark);
+}
+
+.upcomingTitle {
+  color: var(--soil);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upcomingEmoji { font-size: 12px; }
+
 .upcomingCount {
   font-size: 11px;
   color: var(--leaf);
