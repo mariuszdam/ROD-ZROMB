@@ -69,8 +69,9 @@ export default function Fundraising() {
     await supabase.from('fundraising').update({ is_complete: true }).eq('id', id)
   }
 
-  const canSubmit = form.title.trim() && form.creator_name.trim() &&
-    parseFloat(form.goal_amount) > 0 && !saving
+  async function deletePot(id: string) {
+    await supabase.from('fundraising').delete().eq('id', id)
+  }
 
   return (
     <div className={styles.column}>
@@ -160,6 +161,16 @@ export default function Fundraising() {
                         <button className={styles.completeBtn} onClick={() => completePot(pot.id)}>
                           ✓ Zakończ zbiórkę
                         </button>
+                        <button className={styles.deleteBtn} onClick={() => deletePot(pot.id)}>
+                          🗑 Usuń zbiórkę
+                        </button>
+                      </div>
+                    )}
+                    {isAdmin && pot.is_complete && (
+                      <div className={styles.adminPanel}>
+                        <button className={styles.deleteBtn} onClick={() => deletePot(pot.id)}>
+                          🗑 Usuń zbiórkę
+                        </button>
                       </div>
                     )}
                   </div>
@@ -199,7 +210,7 @@ export default function Fundraising() {
               />
               <button
                 className={styles.submitBtn}
-                disabled={!canSubmit}
+                disabled={!(form.title.trim() && form.creator_name.trim() && parseFloat(form.goal_amount) > 0 && !saving)}
                 onClick={addPot}
               >
                 {saving ? 'Zapisywanie…' : 'Dodaj zbiórkę 💰'}

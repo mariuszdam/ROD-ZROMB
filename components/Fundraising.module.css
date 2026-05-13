@@ -227,6 +227,21 @@
 
 .completeBtn:hover { background: var(--sprout); }
 
+.deleteBtn {
+  width: 100%;
+  background: none;
+  border: 1.5px solid #c0392b;
+  color: #c0392b;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s;
+  margin-top: 6px;
+}
+
+.deleteBtn:hover { background: #fdecea; }
+
 /* Create form */
 .form {
   background: white;
