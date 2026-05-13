@@ -4,17 +4,28 @@ import { useState } from 'react'
 import { AuthContext } from '@/lib/auth'
 import styles from './AccessGate.module.css'
 
-const USER_MAP: Record<string, string> = Object.fromEntries(
-  (process.env.NEXT_PUBLIC_USER_CODES ?? '').split(',')
-    .map(s => s.trim()).filter(Boolean)
-    .map(entry => {
-      const [code, ...rest] = entry.split(':')
-      return [code.toLowerCase(), rest.join(':')]
-    })
-)
+const USER_MAP: Record<string, string> = {
+  pawelczescik:     'Pawel Czescik',
+  kasiakoszacka:    'Kasia Koszacka',
+  arekkoszacki:     'Arek Koszacki',
+  danieldam:        'Daniel Dam',
+  juliadam:         'Julia Dam',
+  jakubczescik:     'Jakub Czescik',
+  kacperczescik:    'Kacper Czescik',
+  teresaczescik:    'Teresa Czescik',
+  anetaczescik:     'Aneta Czescik',
+  magdaczescik:     'Magda Czescik',
+  tomaszczescik:    'Tomasz Czescik',
+  anetanasiadka:    'Aneta Nasiadka',
+  wojciechczescik:  'Wojciech Czescik',
+  adamczescik:      'Adam Czescik',
+  agnieszkaczescik: 'Agnieszka Czescik',
+  paulinapietrzak:  'Paulina Pietrzak',
+  aniagasparska:    'Ania Gasparska',
+  mariuszdam:       'Mariusz Dam',
+}
 
-const ADMIN_CODES = (process.env.NEXT_PUBLIC_ADMIN_CODES ?? '')
-  .split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+const ADMIN_CODES = ['mariuszdam', 'tomaszczescik']
 
 export default function AccessGate({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState(false)
