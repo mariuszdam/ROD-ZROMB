@@ -307,7 +307,8 @@
 }
 
 .upcomingTitle {
-  color: var(--soil);
+  font-weight: 600;
+  color: var(--bark);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
