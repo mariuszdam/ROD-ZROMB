@@ -7,9 +7,10 @@ import styles from './Calendar.module.css'
 /* ─── Config ─────────────────────────────────────────────── */
 
 const EVENT_TYPES: { id: EventType; label: string; emoji: string; color: string }[] = [
-  { id: 'grill',  label: 'Grill rodzinny',  emoji: '🔥', color: '#C0622F' },
-  { id: 'visit',  label: 'Zwykła wizyta',   emoji: '🌱', color: '#4A6741' },
-  { id: 'work',   label: 'Prace na działce',emoji: '🛠️', color: '#5C3D2E' },
+  { id: 'grill',   label: 'Grill rodzinny',   emoji: '🔥', color: '#C0622F' },
+  { id: 'visit',   label: 'Zwykła wizyta',    emoji: '🌱', color: '#4A6741' },
+  { id: 'work',    label: 'Prace na działce', emoji: '🛠️', color: '#5C3D2E' },
+  { id: 'private', label: 'Prywatna wizyta',  emoji: '🏡', color: '#7B5EA7' },
 ]
 
 const MONTHS = [
@@ -66,6 +67,7 @@ export default function Calendar() {
   const [form, setForm] = useState({ name: '', type: 'visit' as EventType, note: '' })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [booked, setBooked] = useState(false)
   const [liveIndicator, setLiveIndicator] = useState(false)
   const TODAY = todayKey()
 
@@ -116,6 +118,7 @@ export default function Calendar() {
     })
     setForm({ name: '', type: 'visit', note: '' })
     setSaving(false)
+    setBooked(true)
   }
 
   /* ── Remove booking ── */
@@ -137,6 +140,7 @@ export default function Calendar() {
     setSelected(toDateKey(year, month, day))
     setView('day')
     setForm({ name: '', type: 'visit', note: '' })
+    setBooked(false)
   }
 
   /* ── Calendar grid data ── */
@@ -160,8 +164,8 @@ export default function Calendar() {
       <header className={styles.header}>
         <span className={styles.headerIcon}>🌿</span>
         <div>
-          <div className={styles.headerTitle}>Nasza Działka</div>
-          <div className={styles.headerSub}>Rodzinny Kalendarz Rezerwacji</div>
+          <div className={styles.headerTitle}>ROD ZREMB</div>
+          <div className={styles.headerSub}>ul. Potulicka 3 · Warszawa</div>
         </div>
         <div className={styles.headerRight}>
           {liveIndicator && <span className={styles.liveDot} />}
@@ -316,51 +320,61 @@ export default function Calendar() {
               </div>
             )}
 
-            {/* Add form */}
-            {selected && selected >= TODAY ? (
-              <div className={styles.form}>
-                <div className={styles.formTitle}>+ Dodaj rezerwację</div>
-
-                <label className={styles.label}>Twoje imię</label>
-                <input
-                  className={styles.input}
-                  value={form.name}
-                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  placeholder="np. Mama, Tata, Dziadek…"
-                />
-
-                <label className={styles.label}>Rodzaj wizyty</label>
-                <div className={styles.typeGrid}>
-                  {EVENT_TYPES.map(et => (
-                    <button
-                      key={et.id}
-                      className={`${styles.typeBtn} ${form.type === et.id ? styles.typeBtnActive : ''}`}
-                      style={form.type === et.id
-                        ? { borderColor: et.color, background: et.color + '18', color: et.color }
-                        : {}}
-                      onClick={() => setForm(f => ({ ...f, type: et.id }))}
-                    >
-                      <span>{et.emoji}</span> {et.label}
-                    </button>
-                  ))}
-                </div>
-
-                <label className={styles.label}>Notatka (opcjonalnie)</label>
-                <input
-                  className={styles.input}
-                  value={form.note}
-                  onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
-                  placeholder="np. Sadzę pomidory, przynoszę kiełbaski…"
-                />
-
-                <button
-                  className={styles.submitBtn}
-                  disabled={!form.name.trim() || saving}
-                  onClick={addBooking}
-                >
-                  {saving ? 'Zapisywanie…' : 'Zarezerwuj ten dzień 🌱'}
-                </button>
+            {/* Add form / status */}
+            {booked ? (
+              <div className={styles.successNote}>
+                ✅ Zarezerwowano pomyślnie!
               </div>
+            ) : selected && selected >= TODAY ? (
+              dayBookings.length > 0 ? (
+                <div className={styles.takenNote}>
+                  🔒 Ten dzień jest już zarezerwowany
+                </div>
+              ) : (
+                <div className={styles.form}>
+                  <div className={styles.formTitle}>+ Dodaj rezerwację</div>
+
+                  <label className={styles.label}>Twoje imię</label>
+                  <input
+                    className={styles.input}
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    placeholder="np. Mama, Tata, Dziadek…"
+                  />
+
+                  <label className={styles.label}>Rodzaj wizyty</label>
+                  <div className={styles.typeGrid}>
+                    {EVENT_TYPES.map(et => (
+                      <button
+                        key={et.id}
+                        className={`${styles.typeBtn} ${form.type === et.id ? styles.typeBtnActive : ''}`}
+                        style={form.type === et.id
+                          ? { borderColor: et.color, background: et.color + '18', color: et.color }
+                          : {}}
+                        onClick={() => setForm(f => ({ ...f, type: et.id }))}
+                      >
+                        <span>{et.emoji}</span> {et.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <label className={styles.label}>Notatka (opcjonalnie)</label>
+                  <input
+                    className={styles.input}
+                    value={form.note}
+                    onChange={e => setForm(f => ({ ...f, note: e.target.value }))}
+                    placeholder="np. Sadzę pomidory, przynoszę kiełbaski…"
+                  />
+
+                  <button
+                    className={styles.submitBtn}
+                    disabled={!form.name.trim() || saving}
+                    onClick={addBooking}
+                  >
+                    {saving ? 'Zapisywanie…' : 'Zarezerwuj ten dzień 🌱'}
+                  </button>
+                </div>
+              )
             ) : (
               <div className={styles.pastNote}>Ta data już minęła</div>
             )}

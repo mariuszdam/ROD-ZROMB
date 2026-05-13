@@ -1,0 +1,28 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100dvh;
+}
+
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: repeat(3, 1fr);
+    height: 100dvh;
+    overflow: hidden;
+  }
+}
+
+.col {
+  overflow-y: auto;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .col {
+    border-right: 1px solid var(--wheat);
+  }
+
+  .col:last-child {
+    border-right: none;
+  }
+}

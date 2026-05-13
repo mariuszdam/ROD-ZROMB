@@ -1,0 +1,294 @@
+.column {
+  min-height: 100%;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--parchment) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--bark);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+}
+
+.headerIcon { font-size: 28px; flex-shrink: 0; }
+
+.headerTitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+}
+
+.adminBadge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sun);
+  border: 1px solid var(--sun);
+  border-radius: 20px;
+  padding: 3px 8px;
+}
+
+.body { padding: 16px 16px 48px; flex: 1; }
+
+.banner {
+  background: var(--sun);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--soil);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.loader {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--bark);
+  font-size: 15px;
+}
+
+.empty {
+  background: white;
+  border: 1px solid var(--wheat);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: var(--wheat);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+.potCard {
+  background: white;
+  border: 1.5px solid var(--wheat);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.potCardComplete {
+  background: #f8fff8;
+  border-color: var(--sprout);
+  opacity: 0.85;
+}
+
+.potHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.potTitle {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--bark);
+}
+
+.completeBadge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--moss);
+  background: var(--sprout);
+  border-radius: 20px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.potDesc {
+  font-size: 13px;
+  color: var(--leaf);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* Progress bar */
+.progressWrap { margin-bottom: 10px; }
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--leaf);
+  margin-bottom: 6px;
+}
+
+.progressRaised { font-weight: 700; color: var(--moss); }
+
+.progressTrack {
+  height: 8px;
+  background: var(--parchment);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--leaf), var(--moss));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.progressFillComplete {
+  background: linear-gradient(90deg, var(--moss), var(--sage));
+}
+
+.potMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--leaf);
+  border-top: 1px solid var(--parchment);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+/* Admin panel */
+.adminPanel {
+  border-top: 1px dashed var(--wheat);
+  margin-top: 12px;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adminLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--leaf);
+  font-weight: 700;
+}
+
+.adminRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.adminInput {
+  flex: 1;
+  border: 1.5px solid var(--wheat);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--bark);
+  background: var(--cream);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.adminInput:focus { border-color: var(--leaf); }
+
+.adminSaveBtn {
+  background: var(--moss);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.adminSaveBtn:hover:not(:disabled) { background: var(--bark); }
+.adminSaveBtn:disabled { background: var(--sprout); cursor: not-allowed; }
+
+.completeBtn {
+  width: 100%;
+  background: none;
+  border: 1.5px solid var(--sprout);
+  color: var(--moss);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+
+.completeBtn:hover { background: var(--sprout); }
+
+/* Create form */
+.form {
+  background: white;
+  border: 1.5px solid var(--sprout);
+  border-radius: 16px;
+  padding: 18px 16px;
+  box-shadow: 0 2px 12px rgba(74,103,65,0.07);
+}
+
+.formTitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--moss);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.input {
+  width: 100%;
+  border: 1.5px solid var(--wheat);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--bark);
+  background: var(--cream);
+  margin-bottom: 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus { border-color: var(--leaf); }
+
+.textarea {
+  width: 100%;
+  border: 1.5px solid var(--wheat);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--bark);
+  background: var(--cream);
+  margin-bottom: 10px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s;
+  font-family: var(--font-ui);
+}
+
+.textarea:focus { border-color: var(--leaf); }
+
+.submitBtn {
+  width: 100%;
+  background: var(--bark);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+}
+
+.submitBtn:hover:not(:disabled) { background: var(--soil); }
+.submitBtn:disabled { background: var(--sprout); cursor: not-allowed; }

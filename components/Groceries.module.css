@@ -1,0 +1,229 @@
+.column {
+  min-height: 100%;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--parchment) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--moss);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+}
+
+.headerIcon { font-size: 28px; flex-shrink: 0; }
+
+.headerTitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+}
+
+.body { padding: 16px 16px 48px; flex: 1; }
+
+.addForm {
+  background: white;
+  border: 1.5px solid var(--sprout);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input {
+  width: 100%;
+  border: 1.5px solid var(--wheat);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--bark);
+  background: var(--cream);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus { border-color: var(--leaf); }
+
+.addBtn {
+  width: 100%;
+  background: var(--moss);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 11px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+}
+
+.addBtn:hover:not(:disabled) { background: var(--bark); }
+.addBtn:disabled { background: var(--sprout); cursor: not-allowed; }
+
+.loader {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--bark);
+  font-size: 15px;
+}
+
+.empty {
+  background: white;
+  border: 1px solid var(--wheat);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: var(--wheat);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.list { display: flex; flex-direction: column; gap: 8px; }
+
+.itemCard {
+  background: white;
+  border: 1.5px solid var(--wheat);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+}
+
+.tickBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--sprout);
+  background: white;
+  color: var(--leaf);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.tickBtn:hover {
+  background: var(--moss);
+  border-color: var(--moss);
+  color: white;
+}
+
+.itemBody { flex: 1; min-width: 0; }
+
+.itemName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bark);
+}
+
+.itemMeta {
+  font-size: 11px;
+  color: var(--leaf);
+  margin-top: 2px;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: var(--wheat);
+  font-size: 20px;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.removeBtn:hover { color: var(--rust); }
+
+.tickForm {
+  border-top: 1px solid var(--parchment);
+  padding: 12px 14px;
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tickActions { display: flex; gap: 8px; }
+
+.confirmBtn {
+  flex: 1;
+  background: var(--moss);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.confirmBtn:hover:not(:disabled) { background: var(--bark); }
+.confirmBtn:disabled { background: var(--sprout); cursor: not-allowed; }
+
+.cancelBtn {
+  background: none;
+  border: 1.5px solid var(--wheat);
+  color: var(--bark);
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 13px;
+  transition: border-color 0.15s;
+}
+
+.cancelBtn:hover { border-color: var(--leaf); }
+
+.boughtSection { margin-top: 20px; }
+
+.boughtTitle {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--leaf);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.boughtCard {
+  background: var(--parchment);
+  border: 1px solid var(--wheat);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  opacity: 0.7;
+}
+
+.boughtBody { flex: 1; min-width: 0; }
+
+.boughtName {
+  font-size: 13px;
+  color: var(--bark);
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.boughtMeta {
+  font-size: 11px;
+  color: var(--leaf);
+  margin-top: 3px;
+}

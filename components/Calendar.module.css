@@ -1,6 +1,6 @@
 /* ── App shell ─────────────────────────────────────────────── */
 .app {
-  min-height: 100dvh;
+  min-height: 100%;
   background: linear-gradient(160deg, var(--cream) 0%, var(--parchment) 100%);
   display: flex;
   flex-direction: column;
@@ -477,6 +477,28 @@
   text-align: center;
   font-size: 13px;
   color: var(--wheat);
+}
+
+.takenNote {
+  background: #fff4f0;
+  border: 1.5px solid var(--rust);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--rust);
+}
+
+.successNote {
+  background: #f0fff4;
+  border: 1.5px solid var(--leaf);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--moss);
 }
 
 /* ── Responsive ───────────────────────────────────────────────── */

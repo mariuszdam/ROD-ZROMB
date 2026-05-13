@@ -1,0 +1,87 @@
+.gate {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--parchment) 100%);
+  padding: 24px;
+}
+
+.card {
+  background: white;
+  border: 1.5px solid var(--wheat);
+  border-radius: 20px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon { font-size: 40px; margin-bottom: 4px; }
+
+.title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--bark);
+  letter-spacing: 0.02em;
+}
+
+.address {
+  font-size: 12px;
+  color: var(--leaf);
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.sub {
+  font-size: 13px;
+  color: var(--bark);
+  margin-bottom: 4px;
+}
+
+.input {
+  width: 100%;
+  border: 1.5px solid var(--wheat);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 16px;
+  color: var(--bark);
+  background: var(--cream);
+  outline: none;
+  text-align: center;
+  letter-spacing: 0.2em;
+  transition: border-color 0.15s;
+  margin-top: 4px;
+}
+
+.input:focus { border-color: var(--leaf); }
+
+.inputError { border-color: var(--rust) !important; }
+
+.errorMsg {
+  font-size: 12px;
+  color: var(--rust);
+  margin-top: -4px;
+}
+
+.btn {
+  width: 100%;
+  background: var(--moss);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+
+.btn:hover { background: var(--bark); }
