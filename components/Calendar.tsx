@@ -279,7 +279,6 @@ export default function Calendar() {
                           </div>
                         ))}
                       </div>
-                      <div className={styles.upcomingCount}>{pluralize(bks.length)}</div>
                     </button>
                   )
                 })}
