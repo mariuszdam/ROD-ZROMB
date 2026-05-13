@@ -2,8 +2,17 @@
 
 import { createContext, useContext } from 'react'
 
-export const AuthContext = createContext(false)
+interface AuthState {
+  isAdmin: boolean
+  userName: string
+}
+
+export const AuthContext = createContext<AuthState>({ isAdmin: false, userName: '' })
 
 export function useIsAdmin() {
-  return useContext(AuthContext)
+  return useContext(AuthContext).isAdmin
+}
+
+export function useUserName() {
+  return useContext(AuthContext).userName
 }

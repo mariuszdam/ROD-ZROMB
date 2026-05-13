@@ -405,6 +405,12 @@
   margin-bottom: 14px;
 }
 
+.userLabel {
+  font-size: 13px;
+  color: var(--bark);
+  margin-bottom: 14px;
+}
+
 .label {
   display: block;
   font-size: 11px;

@@ -4,24 +4,33 @@ import { useState } from 'react'
 import { AuthContext } from '@/lib/auth'
 import styles from './AccessGate.module.css'
 
-const CODE        = process.env.NEXT_PUBLIC_ACCESS_CODE ?? ''
+const USER_MAP: Record<string, string> = Object.fromEntries(
+  (process.env.NEXT_PUBLIC_USER_CODES ?? '').split(',')
+    .map(s => s.trim()).filter(Boolean)
+    .map(entry => {
+      const [code, ...rest] = entry.split(':')
+      return [code.toLowerCase(), rest.join(':')]
+    })
+)
+
 const ADMIN_CODES = (process.env.NEXT_PUBLIC_ADMIN_CODES ?? '')
   .split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
 
 export default function AccessGate({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState(false)
   const [isAdmin,  setIsAdmin]  = useState(false)
+  const [userName, setUserName] = useState('')
   const [input,    setInput]    = useState('')
   const [error,    setError]    = useState(false)
 
   function tryUnlock() {
     const val = input.trim().toLowerCase()
-    if (!val || !CODE) { setError(true); return }
+    if (!val) { setError(true); return }
+    const name = USER_MAP[val]
     const admin = ADMIN_CODES.includes(val)
-    const user  = val === CODE.toLowerCase()
-
-    if (admin || user) {
+    if (name) {
       setIsAdmin(admin)
+      setUserName(name)
       setUnlocked(true)
     } else {
       setError(true)
@@ -30,7 +39,7 @@ export default function AccessGate({ children }: { children: React.ReactNode }) 
 
   if (unlocked) {
     return (
-      <AuthContext.Provider value={isAdmin}>
+      <AuthContext.Provider value={{ isAdmin, userName }}>
         {children}
       </AuthContext.Provider>
     )
@@ -42,7 +51,7 @@ export default function AccessGate({ children }: { children: React.ReactNode }) 
         <div className={styles.icon}>🌿</div>
         <div className={styles.title}>ROD ZREMB</div>
         <div className={styles.address}>ul. Potulicka 3 · 03-686 Warszawa</div>
-        <div className={styles.sub}>Wprowadź kod dostępu</div>
+        <div className={styles.sub}>Wprowadź swój kod dostępu</div>
         <input
           className={`${styles.input} ${error ? styles.inputError : ''}`}
           type="password"

@@ -2,15 +2,16 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { supabase, type GroceryItem } from '@/lib/supabase'
+import { useUserName } from '@/lib/auth'
 import styles from './Groceries.module.css'
 
 export default function Groceries() {
+  const userName = useUserName()
   const [items, setItems] = useState<GroceryItem[]>([])
   const [loading, setLoading] = useState(true)
   const [newItem, setNewItem] = useState('')
-  const [newAddedBy, setNewAddedBy] = useState('')
   const [tickingId, setTickingId] = useState<string | null>(null)
-  const [tickForm, setTickForm] = useState({ bought_by: '', bought_note: '' })
+  const [tickNote, setTickNote] = useState('')
   const [saving, setSaving] = useState(false)
 
   const fetchItems = useCallback(async () => {
@@ -36,24 +37,22 @@ export default function Groceries() {
     setSaving(true)
     await supabase.from('groceries').insert({
       item: newItem.trim(),
-      added_by: newAddedBy.trim() || null,
+      added_by: userName || null,
     })
     setNewItem('')
-    setNewAddedBy('')
     setSaving(false)
   }
 
   async function tickItem(id: string) {
-    if (!tickForm.bought_by.trim()) return
     setSaving(true)
     await supabase.from('groceries').update({
       is_bought: true,
-      bought_by: tickForm.bought_by.trim(),
-      bought_note: tickForm.bought_note.trim() || null,
+      bought_by: userName,
+      bought_note: tickNote.trim() || null,
       bought_at: new Date().toISOString(),
     }).eq('id', id)
     setTickingId(null)
-    setTickForm({ bought_by: '', bought_note: '' })
+    setTickNote('')
     setSaving(false)
   }
 
@@ -79,12 +78,6 @@ export default function Groceries() {
             onChange={e => setNewItem(e.target.value)}
             placeholder="Co potrzeba? np. węgiel do grilla…"
             onKeyDown={e => { if (e.key === 'Enter') addItem() }}
-          />
-          <input
-            className={styles.input}
-            value={newAddedBy}
-            onChange={e => setNewAddedBy(e.target.value)}
-            placeholder="Twoje imię (opcjonalnie)"
           />
           <button
             className={styles.addBtn}
@@ -130,21 +123,15 @@ export default function Groceries() {
                     <div className={styles.tickForm}>
                       <input
                         className={styles.input}
-                        value={tickForm.bought_by}
-                        onChange={e => setTickForm(f => ({ ...f, bought_by: e.target.value }))}
-                        placeholder="Twoje imię (wymagane)"
-                        autoFocus
-                      />
-                      <input
-                        className={styles.input}
-                        value={tickForm.bought_note}
-                        onChange={e => setTickForm(f => ({ ...f, bought_note: e.target.value }))}
+                        value={tickNote}
+                        onChange={e => setTickNote(e.target.value)}
                         placeholder="Komentarz (opcjonalnie)"
+                        autoFocus
                       />
                       <div className={styles.tickActions}>
                         <button
                           className={styles.confirmBtn}
-                          disabled={!tickForm.bought_by.trim() || saving}
+                          disabled={saving}
                           onClick={() => tickItem(item.id)}
                         >
                           Potwierdź

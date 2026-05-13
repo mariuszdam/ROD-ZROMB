@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { supabase, type FundraisingPot } from '@/lib/supabase'
-import { useIsAdmin } from '@/lib/auth'
+import { useIsAdmin, useUserName } from '@/lib/auth'
 import styles from './Fundraising.module.css'
 
 function formatPLN(amount: number) {
@@ -17,9 +17,10 @@ function formatDate(dateStr: string) {
 
 export default function Fundraising() {
   const isAdmin = useIsAdmin()
+  const userName = useUserName()
   const [pots, setPots] = useState<FundraisingPot[]>([])
   const [loading, setLoading] = useState(true)
-  const [form, setForm] = useState({ title: '', description: '', goal_amount: '', creator_name: '' })
+  const [form, setForm] = useState({ title: '', description: '', goal_amount: '' })
   const [saving, setSaving] = useState(false)
   const [raisedInputs, setRaisedInputs] = useState<Record<string, string>>({})
 
@@ -44,7 +45,7 @@ export default function Fundraising() {
 
   async function addPot() {
     const amount = parseFloat(form.goal_amount)
-    if (!form.title.trim() || !form.creator_name.trim() || isNaN(amount) || amount <= 0) return
+    if (!form.title.trim() || isNaN(amount) || amount <= 0) return
     setSaving(true)
     await supabase.from('fundraising').insert({
       title: form.title.trim(),
@@ -52,9 +53,9 @@ export default function Fundraising() {
       goal_amount: amount,
       raised_amount: 0,
       is_complete: false,
-      creator_name: form.creator_name.trim(),
+      creator_name: userName,
     })
-    setForm({ title: '', description: '', goal_amount: '', creator_name: '' })
+    setForm({ title: '', description: '', goal_amount: '' })
     setSaving(false)
   }
 
@@ -202,15 +203,9 @@ export default function Fundraising() {
                 onChange={e => setForm(f => ({ ...f, goal_amount: e.target.value }))}
                 placeholder="Cel zbiórki (PLN)"
               />
-              <input
-                className={styles.input}
-                value={form.creator_name}
-                onChange={e => setForm(f => ({ ...f, creator_name: e.target.value }))}
-                placeholder="Imię i nazwisko twórcy"
-              />
               <button
                 className={styles.submitBtn}
-                disabled={!(form.title.trim() && form.creator_name.trim() && parseFloat(form.goal_amount) > 0 && !saving)}
+                disabled={!(form.title.trim() && parseFloat(form.goal_amount) > 0 && !saving)}
                 onClick={addPot}
               >
                 {saving ? 'Zapisywanie…' : 'Dodaj zbiórkę 💰'}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { supabase, type Booking, type EventType } from '@/lib/supabase'
+import { useUserName, useIsAdmin } from '@/lib/auth'
 import styles from './Calendar.module.css'
 
 /* ─── Config ─────────────────────────────────────────────── */
@@ -58,13 +59,15 @@ function getEventType(type: EventType) {
 /* ─── Component ───────────────────────────────────────────── */
 
 export default function Calendar() {
+  const userName = useUserName()
+  const isAdmin = useIsAdmin()
   const now = new Date()
   const [year,  setYear]  = useState(now.getFullYear())
   const [month, setMonth] = useState(now.getMonth())
   const [bookings, setBookings] = useState<Record<string, Booking[]>>({})
   const [selected, setSelected] = useState<string | null>(null)
   const [view, setView] = useState<'calendar' | 'day'>('calendar')
-  const [form, setForm] = useState({ name: '', type: 'visit' as EventType, note: '' })
+  const [form, setForm] = useState({ type: 'visit' as EventType, note: '' })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [booked, setBooked] = useState(false)
@@ -108,15 +111,15 @@ export default function Calendar() {
 
   /* ── Add booking ── */
   async function addBooking() {
-    if (!form.name.trim() || !selected) return
+    if (!selected) return
     setSaving(true)
     await supabase.from('bookings').insert({
       date: selected,
-      name: form.name.trim(),
+      name: userName,
       type: form.type,
       note: form.note.trim() || null,
     })
-    setForm({ name: '', type: 'visit', note: '' })
+    setForm({ type: 'visit', note: '' })
     setSaving(false)
     setBooked(true)
   }
@@ -139,7 +142,7 @@ export default function Calendar() {
   function openDay(day: number) {
     setSelected(toDateKey(year, month, day))
     setView('day')
-    setForm({ name: '', type: 'visit', note: '' })
+    setForm({ type: 'visit', note: '' })
     setBooked(false)
   }
 
@@ -313,7 +316,9 @@ export default function Calendar() {
                         </div>
                         {b.note && <div className={styles.bookingNote}>„{b.note}"</div>}
                       </div>
-                      <button className={styles.removeBtn} onClick={() => removeBooking(b.id)} title="Usuń">×</button>
+                      {(isAdmin || b.name === userName) && (
+                        <button className={styles.removeBtn} onClick={() => removeBooking(b.id)} title="Usuń">×</button>
+                      )}
                     </div>
                   )
                 })}
@@ -333,14 +338,7 @@ export default function Calendar() {
               ) : (
                 <div className={styles.form}>
                   <div className={styles.formTitle}>+ Dodaj rezerwację</div>
-
-                  <label className={styles.label}>Twoje imię</label>
-                  <input
-                    className={styles.input}
-                    value={form.name}
-                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    placeholder="np. Mama, Tata, Dziadek…"
-                  />
+                  <div className={styles.userLabel}>Rezerwujesz jako: <strong>{userName}</strong></div>
 
                   <label className={styles.label}>Rodzaj wizyty</label>
                   <div className={styles.typeGrid}>
@@ -368,7 +366,7 @@ export default function Calendar() {
 
                   <button
                     className={styles.submitBtn}
-                    disabled={!form.name.trim() || saving}
+                    disabled={saving}
                     onClick={addBooking}
                   >
                     {saving ? 'Zapisywanie…' : 'Zarezerwuj ten dzień 🌱'}
