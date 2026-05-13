@@ -67,7 +67,7 @@ export default function Calendar() {
   const [bookings, setBookings] = useState<Record<string, Booking[]>>({})
   const [selected, setSelected] = useState<string | null>(null)
   const [view, setView] = useState<'calendar' | 'day'>('calendar')
-  const [form, setForm] = useState({ type: 'visit' as EventType, note: '' })
+  const [form, setForm] = useState({ title: '', type: 'visit' as EventType, note: '' })
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [booked, setBooked] = useState(false)
@@ -116,10 +116,11 @@ export default function Calendar() {
     await supabase.from('bookings').insert({
       date: selected,
       name: userName,
+      title: form.title.trim() || null,
       type: form.type,
       note: form.note.trim() || null,
     })
-    setForm({ type: 'visit', note: '' })
+    setForm({ title: '', type: 'visit', note: '' })
     setSaving(false)
     setBooked(true)
   }
@@ -142,7 +143,7 @@ export default function Calendar() {
   function openDay(day: number) {
     setSelected(toDateKey(year, month, day))
     setView('day')
-    setForm({ type: 'visit', note: '' })
+    setForm({ title: '', type: 'visit', note: '' })
     setBooked(false)
   }
 
@@ -311,6 +312,7 @@ export default function Calendar() {
                       <span className={styles.bookingEmoji}>{et.emoji}</span>
                       <div className={styles.bookingBody}>
                         <div className={styles.bookingName}>{b.name}</div>
+                        {b.title && <div className={styles.bookingTitle}>{b.title}</div>}
                         <div className={styles.bookingTag} style={{ color: et.color, background: et.color + '18' }}>
                           {et.label}
                         </div>
@@ -339,6 +341,14 @@ export default function Calendar() {
                 <div className={styles.form}>
                   <div className={styles.formTitle}>+ Dodaj rezerwację</div>
                   <div className={styles.userLabel}>Rezerwujesz jako: <strong>{userName}</strong></div>
+
+                  <label className={styles.label}>Tytuł (opcjonalnie)</label>
+                  <input
+                    className={styles.input}
+                    value={form.title}
+                    onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
+                    placeholder="np. Urodziny, Długi weekend…"
+                  />
 
                   <label className={styles.label}>Rodzaj wizyty</label>
                   <div className={styles.typeGrid}>

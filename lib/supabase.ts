@@ -7,6 +7,7 @@ export type Booking = {
   date: string
   name: string
   type: EventType
+  title: string | null
   note: string | null
   created_at: string
 }

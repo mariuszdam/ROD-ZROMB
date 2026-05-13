@@ -358,6 +358,13 @@
   color: var(--bark);
 }
 
+.bookingTitle {
+  font-size: 13px;
+  color: var(--soil);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
 .bookingTag {
   display: inline-block;
   font-size: 11px;
