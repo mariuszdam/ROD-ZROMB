@@ -104,7 +104,7 @@ export default function Groceries() {
                       className={styles.tickBtn}
                       onClick={() => {
                         setTickingId(tickingId === item.id ? null : item.id)
-                        setTickForm({ bought_by: '', bought_note: '' })
+                        setTickNote('')
                       }}
                       title="Oznacz jako kupione"
                     >
