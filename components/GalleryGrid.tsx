@@ -87,6 +87,7 @@ export default function GalleryGrid() {
   return (
     <div className={styles.column}>
       <div className={styles.header}>
+        <Link href="/" className={styles.backBtn}>←</Link>
         <span className={styles.headerIcon}>📷</span>
         <div className={styles.headerTitle}>Galerie</div>
       </div>

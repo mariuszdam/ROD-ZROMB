@@ -17,6 +17,13 @@
   box-shadow: 0 2px 16px rgba(0,0,0,0.18);
 }
 
+.backBtn {
+  color: var(--cream);
+  font-size: 20px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
 .headerIcon { font-size: 28px; flex-shrink: 0; }
 
 .headerTitle {
