@@ -34,6 +34,24 @@ export type FundraisingPot = {
   created_at: string
 }
 
+export type Gallery = {
+  id: string
+  name: string
+  created_by: string | null
+  created_at: string
+}
+
+export type GalleryPhoto = {
+  id: string
+  gallery_id: string
+  storage_path: string
+  image_url: string
+  uploaded_by: string | null
+  created_at: string
+}
+
+export const GALLERY_BUCKET = 'gallery-photos'
+
 export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

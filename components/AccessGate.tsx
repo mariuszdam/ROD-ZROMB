@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AuthContext } from '@/lib/auth'
 import styles from './AccessGate.module.css'
+
+const STORAGE_KEY = 'dzialka_access_code'
 
 const USER_MAP: Record<string, string> = {
   pawelczescik:     'Pawel Czescik',
@@ -34,12 +36,22 @@ export default function AccessGate({ children }: { children: React.ReactNode }) 
   const [input,    setInput]    = useState('')
   const [error,    setError]    = useState(false)
 
+  useEffect(() => {
+    const stored = sessionStorage.getItem(STORAGE_KEY)
+    if (stored && USER_MAP[stored]) {
+      setIsAdmin(ADMIN_CODES.includes(stored))
+      setUserName(USER_MAP[stored])
+      setUnlocked(true)
+    }
+  }, [])
+
   function tryUnlock() {
     const val = input.trim().toLowerCase()
     if (!val) { setError(true); return }
     const name = USER_MAP[val]
     const admin = ADMIN_CODES.includes(val)
     if (name) {
+      sessionStorage.setItem(STORAGE_KEY, val)
       setIsAdmin(admin)
       setUserName(name)
       setUnlocked(true)

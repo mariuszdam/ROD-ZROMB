@@ -1,0 +1,163 @@
+.column {
+  min-height: 100%;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--parchment) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--moss);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+}
+
+.backBtn {
+  color: var(--cream);
+  font-size: 20px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deleteGalleryBtn {
+  background: none;
+  border: 1px solid var(--rust);
+  color: var(--cream);
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.deleteGalleryBtn:hover { background: var(--rust); }
+
+.body { padding: 16px 16px 48px; flex: 1; }
+
+.uploadBox { margin-bottom: 20px; }
+.fileInput { display: none; }
+
+.uploadBtn {
+  width: 100%;
+  background: var(--moss);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+}
+
+.uploadBtn:hover:not(:disabled) { background: var(--bark); }
+.uploadBtn:disabled { background: var(--sprout); cursor: not-allowed; }
+
+.loader {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--bark);
+  font-size: 15px;
+}
+
+.empty {
+  background: white;
+  border: 1px solid var(--wheat);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: var(--wheat);
+  font-size: 13px;
+}
+
+.grid {
+  columns: 2 160px;
+  column-gap: 10px;
+}
+
+@media (min-width: 480px) { .grid { columns: 3 160px; } }
+@media (min-width: 900px) { .grid { columns: 4 200px; } }
+
+.tile {
+  break-inside: avoid;
+  margin-bottom: 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--parchment);
+  border: 1.5px solid var(--wheat);
+  transition: transform 0.45s cubic-bezier(0.19,1,0.22,1), box-shadow 0.45s;
+}
+
+.tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.16);
+}
+
+.tileImg {
+  width: 100%;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.19,1,0.22,1);
+}
+
+.tile:hover .tileImg { transform: scale(1.06); }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,15,10,0.92);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.lightboxImg {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.lightboxDelete {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--rust);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 600;
+}

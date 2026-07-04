@@ -1,0 +1,174 @@
+.column {
+  min-height: 100%;
+  background: linear-gradient(160deg, var(--cream) 0%, var(--parchment) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--moss);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+}
+
+.headerIcon { font-size: 28px; flex-shrink: 0; }
+
+.headerTitle {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.03em;
+}
+
+.body { padding: 16px 16px 48px; flex: 1; }
+
+.addForm {
+  background: white;
+  border: 1.5px solid var(--sprout);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input {
+  width: 100%;
+  border: 1.5px solid var(--wheat);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--bark);
+  background: var(--cream);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus { border-color: var(--leaf); }
+
+.addBtn {
+  width: 100%;
+  background: var(--moss);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 11px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+}
+
+.addBtn:hover:not(:disabled) { background: var(--bark); }
+.addBtn:disabled { background: var(--sprout); cursor: not-allowed; }
+
+.loader {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--bark);
+  font-size: 15px;
+}
+
+.empty {
+  background: white;
+  border: 1px solid var(--wheat);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  color: var(--wheat);
+  font-size: 13px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1.5px solid var(--wheat);
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.45s cubic-bezier(0.19,1,0.22,1), box-shadow 0.45s power3.out;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+}
+
+.thumbWrap {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--parchment);
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.19,1,0.22,1);
+}
+
+.card:hover .thumb { transform: scale(1.08); }
+
+.thumbEmpty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: var(--sprout);
+}
+
+.cardBody { padding: 10px 12px; }
+
+.cardName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--bark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardMeta {
+  font-size: 11px;
+  color: var(--leaf);
+  margin-top: 2px;
+}
+
+.deleteBtn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(20,15,10,0.6);
+  color: white;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.deleteBtn:hover { background: var(--rust); }

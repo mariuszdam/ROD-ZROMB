@@ -65,3 +65,55 @@ create policy "Public insert" on fundraising for insert with check (true);
 create policy "Public update" on fundraising for update using (true);
 
 alter publication supabase_realtime add table fundraising;
+
+-- ── Galleries ─────────────────────────────────────────────────────
+create table if not exists galleries (
+  id         uuid primary key default gen_random_uuid(),
+  name       text not null,
+  created_by text,
+  created_at timestamptz not null default now()
+);
+
+alter table galleries enable row level security;
+
+create policy "Public read"   on galleries for select using (true);
+create policy "Public insert" on galleries for insert with check (true);
+create policy "Public delete" on galleries for delete using (true); -- app enforces admin-only in UI
+
+alter publication supabase_realtime add table galleries;
+
+create table if not exists gallery_photos (
+  id           uuid primary key default gen_random_uuid(),
+  gallery_id   uuid not null references galleries(id) on delete cascade,
+  storage_path text not null,
+  image_url    text not null,
+  uploaded_by  text,
+  created_at   timestamptz not null default now()
+);
+
+create index if not exists gallery_photos_gallery_idx on gallery_photos (gallery_id);
+
+alter table gallery_photos enable row level security;
+
+create policy "Public read"   on gallery_photos for select using (true);
+create policy "Public insert" on gallery_photos for insert with check (true);
+create policy "Public delete" on gallery_photos for delete using (true);
+
+alter publication supabase_realtime add table gallery_photos;
+
+-- ── Gallery photo storage bucket ─────────────────────────────────
+insert into storage.buckets (id, name, public)
+values ('gallery-photos', 'gallery-photos', true)
+on conflict (id) do nothing;
+
+create policy "Public read gallery photos"
+  on storage.objects for select
+  using (bucket_id = 'gallery-photos');
+
+create policy "Public upload gallery photos"
+  on storage.objects for insert
+  with check (bucket_id = 'gallery-photos');
+
+create policy "Public delete gallery photos"
+  on storage.objects for delete
+  using (bucket_id = 'gallery-photos');

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Calendar from '@/components/Calendar'
 import Groceries from '@/components/Groceries'
 import Fundraising from '@/components/Fundraising'
@@ -9,6 +10,7 @@ export const dynamic = 'force-dynamic'
 export default function Home() {
   return (
     <AccessGate>
+      <Link href="/galeria" className={styles.galleryLink} title="Galerie zdjęć">📷</Link>
       <div className={styles.layout}>
         <div className={styles.col}><Calendar /></div>
         <div className={styles.col}><Groceries /></div>
