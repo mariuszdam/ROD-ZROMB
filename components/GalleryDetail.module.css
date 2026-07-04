@@ -135,7 +135,33 @@
   max-height: 85vh;
   border-radius: 8px;
   object-fit: contain;
+  touch-action: pan-y;
 }
+
+.lightboxPrev,
+.lightboxNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: white;
+  font-size: 32px;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.lightboxPrev:hover,
+.lightboxNext:hover { background: rgba(255,255,255,0.24); }
+
+.lightboxPrev { left: 12px; }
+.lightboxNext { right: 12px; }
 
 .lightboxClose {
   position: absolute;

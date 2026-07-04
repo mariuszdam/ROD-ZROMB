@@ -34,9 +34,33 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState<{ done: number; total: number } | null>(null)
-  const [selected, setSelected] = useState<GalleryPhoto | null>(null)
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
+  const touchStartX = useRef<number | null>(null)
+
+  const selected = selectedIndex !== null ? photos[selectedIndex] ?? null : null
+
+  function showPrev() {
+    setSelectedIndex(i => (i === null ? null : (i - 1 + photos.length) % photos.length))
+  }
+
+  function showNext() {
+    setSelectedIndex(i => (i === null ? null : (i + 1) % photos.length))
+  }
+
+  function onTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current
+    touchStartX.current = null
+    if (Math.abs(deltaX) < 50) return
+    if (deltaX < 0) showNext()
+    else showPrev()
+  }
 
   const fetchGallery = useCallback(async () => {
     const { data } = await supabase.from('galleries').select('*').eq('id', galleryId).maybeSingle()
@@ -79,13 +103,28 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
   }, { dependencies: [loading, photos.length], scope: gridRef })
 
   useGSAP(() => {
-    if (!selected) return
+    if (selectedIndex === null) return
     gsap.fromTo(`.${styles.lightbox}`, { opacity: 0 }, { opacity: 1, duration: 0.9, ease: 'power3.inOut' })
+  }, { dependencies: [selectedIndex !== null] })
+
+  useGSAP(() => {
+    if (selectedIndex === null) return
     gsap.fromTo(`.${styles.lightboxImg}`,
-      { scale: 0.92, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.9, ease: 'power3.inOut' }
+      { opacity: 0 },
+      { opacity: 1, duration: 0.45, ease: 'power3.out' }
     )
-  }, { dependencies: [selected] })
+  }, { dependencies: [selectedIndex] })
+
+  useEffect(() => {
+    if (selectedIndex === null) return
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'ArrowLeft') showPrev()
+      else if (e.key === 'ArrowRight') showNext()
+      else if (e.key === 'Escape') setSelectedIndex(null)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [selectedIndex, photos.length])
 
   async function handleFiles(fileList: FileList | null) {
     if (!fileList || !fileList.length) return
@@ -118,8 +157,11 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
   }
 
   async function deletePhoto(photo: GalleryPhoto) {
-    setPhotos(prev => prev.filter(p => p.id !== photo.id))
-    setSelected(null)
+    setPhotos(prev => {
+      const next = prev.filter(p => p.id !== photo.id)
+      setSelectedIndex(next.length === 0 ? null : Math.min(selectedIndex ?? 0, next.length - 1))
+      return next
+    })
     await supabase.storage.from(GALLERY_BUCKET).remove([photo.storage_path])
     await supabase.from('gallery_photos').delete().eq('id', photo.id)
   }
@@ -166,8 +208,8 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
           <div className={styles.empty}>Brak zdjęć — dodaj pierwsze! 🌿</div>
         ) : (
           <div className={styles.grid} ref={gridRef}>
-            {photos.map(photo => (
-              <div key={photo.id} className={styles.tile} onClick={() => setSelected(photo)}>
+            {photos.map((photo, index) => (
+              <div key={photo.id} className={styles.tile} onClick={() => setSelectedIndex(index)}>
                 <img className={styles.tileImg} src={photo.image_url} alt="" loading="lazy" />
               </div>
             ))}
@@ -176,13 +218,34 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
       </div>
 
       {selected && (
-        <div className={styles.lightbox} onClick={() => setSelected(null)}>
+        <div
+          className={styles.lightbox}
+          onClick={() => setSelectedIndex(null)}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
+          {photos.length > 1 && (
+            <button
+              className={styles.lightboxPrev}
+              onClick={e => { e.stopPropagation(); showPrev() }}
+            >
+              ‹
+            </button>
+          )}
           <img
             className={styles.lightboxImg}
             src={selected.image_url}
             alt=""
             onClick={e => e.stopPropagation()}
           />
+          {photos.length > 1 && (
+            <button
+              className={styles.lightboxNext}
+              onClick={e => { e.stopPropagation(); showNext() }}
+            >
+              ›
+            </button>
+          )}
           {(isAdmin || (!!userName && selected.uploaded_by === userName)) && (
             <button
               className={styles.lightboxDelete}
@@ -191,7 +254,7 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
               Usuń zdjęcie
             </button>
           )}
-          <button className={styles.lightboxClose} onClick={() => setSelected(null)}>×</button>
+          <button className={styles.lightboxClose} onClick={() => setSelectedIndex(null)}>×</button>
         </div>
       )}
     </div>
