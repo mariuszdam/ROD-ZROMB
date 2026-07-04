@@ -93,6 +93,10 @@ create table if not exists gallery_photos (
 
 create index if not exists gallery_photos_gallery_idx on gallery_photos (gallery_id);
 
+-- Needed so realtime DELETE events include gallery_id (used to filter the
+-- per-gallery subscription) instead of just the primary key.
+alter table gallery_photos replica identity full;
+
 alter table gallery_photos enable row level security;
 
 create policy "Public read"   on gallery_photos for select using (true);

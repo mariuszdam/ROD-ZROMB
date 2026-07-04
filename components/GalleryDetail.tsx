@@ -118,9 +118,10 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
   }
 
   async function deletePhoto(photo: GalleryPhoto) {
+    setPhotos(prev => prev.filter(p => p.id !== photo.id))
+    setSelected(null)
     await supabase.storage.from(GALLERY_BUCKET).remove([photo.storage_path])
     await supabase.from('gallery_photos').delete().eq('id', photo.id)
-    setSelected(null)
   }
 
   async function deleteGallery() {
@@ -146,7 +147,6 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
             type="file"
             accept="image/*"
             multiple
-            capture="environment"
             onChange={e => handleFiles(e.target.files)}
           />
           <button
@@ -183,7 +183,7 @@ export default function GalleryDetail({ galleryId }: { galleryId: string }) {
             alt=""
             onClick={e => e.stopPropagation()}
           />
-          {isAdmin && (
+          {(isAdmin || (!!userName && selected.uploaded_by === userName)) && (
             <button
               className={styles.lightboxDelete}
               onClick={e => { e.stopPropagation(); deletePhoto(selected) }}
